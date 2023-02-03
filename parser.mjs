@@ -61,11 +61,11 @@ export default function(filename) {
 
         videosCount,
         endpointsCount,
-        requestDescriptionsCount,
+        requestsCount: requestDescriptionsCount,
         cachesCount,
     
         endpoints,
-        requestDescriptions,
+        requests: requestDescriptions,
         caches,
         videos
     }

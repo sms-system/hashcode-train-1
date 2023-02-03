@@ -1,35 +1,34 @@
-
+import parse from "./parser.mjs"
+const input = parse('./in.txt')
 
 function solve(input) {
-    utility = new Array(input.caches.length)
-    for (let i = 0; i < utility.length; ++i)
-        utility[i] = {}
+    const utility = input.caches.map(_=> ({}))
 
-    for (let i = 0; i < input.requests.length; i++) {
+    for (let i = 0; i < input.requestsCount; i++) {
         let req = input.requests[i]
         // req.id, req.video, req.endpoint, req.count
-        let endpoint = input.endpoints[req.endpoint]
-        for (let j = 0; j < endpoint.caches; j++) {
+        let endpoint = req.endpoint
+        for (let j = 0; j < endpoint.data.caches.length; j++) {
             // for each (cache, video) pair compute how much time we save storing video in this cache
-            let cacheId = endpoint.caches[j].id
-            let cacheLatency = endpoint.caches[j].latency
+            let cacheId = endpoint.data.caches[j].cache.id
+            let cacheLatency = endpoint.data.caches[j].latency
 
-            let win = Math.max(0, (endpoint.dcLatency - cacheLatency) * req.count)
+            let win = Math.max(0, (endpoint.data.latency - cacheLatency) * req.count)
 
-            if (!(req.video in utility[endpoint.caches[j].id])) {
-                utility[req.caches[j].id][req.video] = 0
+            if (!(req.video.id in utility[cacheId])) {
+                utility[cacheId][req.video.id] = 0
             }
-            output[req.caches[j].id][req.video] += win
+            utility[cacheId][req.video.id] += win
         }
     }
 
     // next we select best videos for each cache
     for (let i = 0; i < utility.length; ++i) {
-        videosOfThisCache = []
+        const videosOfThisCache = []
         for (let videoId in utility[i]) {
-            videosOfThisCache.append({
+            videosOfThisCache.push({
                 "id" : videoId,
-                "utility" : utility[videoId],
+                "utility" : utility[i][videoId],
                 "size" : input.videos[videoId].size
             })
         }
@@ -38,22 +37,23 @@ function solve(input) {
     }
 
     // determine best videos for each cache
-    output = []
+    const output = []
 
     for (let i = 0; i < utility.length; ++i) {
-        let cacheSize = input.caches[i].size
+        let cacheSize = input.caches[i].cachesCapacity
         let sortedVideos = utility[i].sortedVideos
         let res = []
-        for (let video in sortedVideos) {
+
+        for (let video of sortedVideos) {
             cacheSize -= video.size
             if (cacheSize > 0) {
-                res.append(video.id)
+                res.push(video.id)
             } else {
                 break
             }
         }
         if (res.length > 0) {
-            output.append({
+            output.push({
                 "cache" : i,
                 "videos" : res
             })
@@ -62,3 +62,12 @@ function solve(input) {
 
     return output
 }
+
+
+console.log(solve(input))
+
+cacheId | videoId
+0       | 3
+2       | 1
+
+
