@@ -6,21 +6,21 @@ export default function(filename) {
     const endpoints = []
     const requestDescriptions = []
     const caches = []
-    
+
     let cursor = 0
-    
+
     const [videosCount, endpointsCount, requestDescriptionsCount, cachesCount, cachesCapacity] = lines[cursor++].split(' ').map(x => Number(x))
-    
+
     for (let i = 0; i < cachesCount; i++) {
         caches.push({
             cachesCapacity,
         })
     }
-    
+
     const videos = lines[cursor++].split(' ').map(x => ({
         size: Number(x)
     }))
-    
+
     for (let i = 0; i < endpointsCount; i++) {
         const [latency, cachesCount] = lines[cursor++].split(' ')
         const endpoint = {
@@ -39,7 +39,7 @@ export default function(filename) {
         }
         endpoints.push(endpoint)
     }
-    
+
     for (let i = 0; i < requestDescriptionsCount; i++) {
         const [videoId, endpointID, count] = lines[cursor++].split(' ')
         const requestDescription = {
@@ -63,7 +63,7 @@ export default function(filename) {
         endpointsCount,
         requestsCount: requestDescriptionsCount,
         cachesCount,
-    
+
         endpoints,
         requests: requestDescriptions,
         caches,
