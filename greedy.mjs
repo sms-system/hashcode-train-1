@@ -1,5 +1,5 @@
-import parse from "./parser.mjs"
-const input = parse('./in.txt')
+import parse from "./parser.mjs";
+const input = parse('./qualification_round_2017.in/kittens.in.txt')
 
 function solve(input) {
     const utility = input.caches.map(_=> ({}))
@@ -64,10 +64,8 @@ function solve(input) {
 }
 
 
-console.log(solve(input))
-
-cacheId | videoId
-0       | 3
-2       | 1
-
-
+function format(output) {
+    return `${output.length}\n${output.map(a => `${a.cache} ${a.videos.join(' ')}`).join('\n')}`
+ }
+ 
+ console.log(format(solve(input)))

@@ -13,17 +13,20 @@ export default function(filename) {
 
     for (let i = 0; i < cachesCount; i++) {
         caches.push({
+            id: i,
             cachesCapacity,
         })
     }
 
-    const videos = lines[cursor++].split(' ').map(x => ({
+    const videos = lines[cursor++].split(' ').map((x, i) => ({
+        id: i,
         size: Number(x)
     }))
 
     for (let i = 0; i < endpointsCount; i++) {
         const [latency, cachesCount] = lines[cursor++].split(' ')
         const endpoint = {
+            id: i,
             latency: Number(latency),
             caches: []
         }

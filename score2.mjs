@@ -1,5 +1,6 @@
 function parseOutput(output) {
-    const lines = readFileSync(outputPath, 'utf-8').split('\n');
+    const lines = output.split('\n')
+    //readFileSync(outputPath, 'utf-8').split('\n');
     const n = Number(lines[0]);
 
     const result = new Map();
